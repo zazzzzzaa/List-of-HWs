@@ -24,7 +24,7 @@ class Cities:
     def create_cities_names_set(self):
         cities_names_set = set()
         for city_info in self.city_data:
-            if city_info['name'][:-1] != 'ёьъы'
+            if city_info['name'][:-1] != 'ёьъы':
                 cities_names_set.add(city_info['name'])
         return cities_names_set
 
@@ -63,10 +63,11 @@ class CityGame:
             if self.check_game_rules(self.human_city, city_by_ai):
                 print(f'Компьютер назвал город: {city_by_ai}')
                 self.ai_city = city_by_ai
+                self.cities_set.remove(city_by_ai)
                 return True
-            else:
-                print('Поздравляют! Вы победили')
-                return False
+        else:
+            print('Поздравляют! Вы победили')
+            return False
 
 
 class GameManager:
@@ -75,7 +76,7 @@ class GameManager:
         self.cities = cities
         self.game = game
 
-    def __start_game(self):
+    def start_game(self):
         while True:
             if not self.game.human_turn():
                 break
@@ -83,8 +84,13 @@ class GameManager:
                 break
 
     def __call__(self):
-        self.__start_game()
+        self.start_game()
         input('Игра завершена. Нажмите Enter для выхода. ')
 
 
-if __name__ == "__main__"
+if __name__ == "__main__":
+    json_file = JsonFile("cities.json")
+    cities = Cities(json_file.read_data())
+    game = CityGame(cities)
+    game_manager = GameManager(json_file, cities, game)
+    game_manager()

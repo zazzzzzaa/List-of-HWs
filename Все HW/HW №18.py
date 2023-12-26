@@ -66,4 +66,25 @@ class CityGame:
                 return True
             else:
                 print('Поздравляют! Вы победили')
+                return False
 
+
+class GameManager:
+    def __init__(self, json_file: JsonFile, cities: Cities, game: CityGame):
+        self.json_file = json_file
+        self.cities = cities
+        self.game = game
+
+    def __start_game(self):
+        while True:
+            if not self.game.human_turn():
+                break
+            if not self.game.ai_turn():
+                break
+
+    def __call__(self):
+        self.__start_game()
+        input('Игра завершена. Нажмите Enter для выхода. ')
+
+
+if __name__ == "__main__"
